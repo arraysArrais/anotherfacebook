@@ -17,6 +17,11 @@
                             <div class="profile-info-location"><?= $user->city ?></div>
                         </div>
                         <div class="profile-info-data row">
+                            <?php if ($user->id != $loggedUser->id) : ?>
+                                <div class="profile-info-item m-width-20">
+                                <a class="button" href="<?=$base?>/perfil/<?=$user->id?>/follow"><?=(!$isFollowing)?'Seguir':'Deixar de Seguir';?></a>
+                                </div>
+                            <?php endif; ?>
                             <div class="profile-info-item m-width-20">
                                 <div class="profile-info-item-n"><?= count($user->followers) ?></div>
                                 <div class="profile-info-item-s">Seguidores</div>
@@ -126,9 +131,9 @@
 
                     </div>
                 </div>
-                    <?php if($user->id == $loggedUser->id):?>
+                <?php if ($user->id == $loggedUser->id) : ?>
                     <? $render('feed-editor', ['user' => $loggedUser]) ?>
-                    <?php endif; ?>
+                <?php endif; ?>
 
                 <?php foreach ($feed['posts'] as $feedItem) : ?>
 
@@ -141,7 +146,7 @@
 
                 <div class="feed-pagination">
                     <?php for ($i = 0; $i < $feed['pageCount']; $i++) : ?>
-                        <a class="<?= ($i == $feed['currentPage'] ? 'active' : '') ?>" href="<?= $base ?>/perfil/<?=$user->id;?>?page=<?= $i ?>"> <?= $i + 1 ?></a>
+                        <a class="<?= ($i == $feed['currentPage'] ? 'active' : '') ?>" href="<?= $base ?>/perfil/<?= $user->id; ?>?page=<?= $i ?>"> <?= $i + 1 ?></a>
                     <?php endfor; ?>
                 </div>
 

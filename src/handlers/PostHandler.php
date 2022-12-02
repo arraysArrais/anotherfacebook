@@ -100,7 +100,7 @@ class PostHandler
 
         //jogando para $users todos os ids das pessoas que EU sigo
         foreach ($userList as $userItem) {
-            $user[] = $userItem['user_to'];
+            $users[] = $userItem['user_to'];
         }
 
         $users[] = $idUser;

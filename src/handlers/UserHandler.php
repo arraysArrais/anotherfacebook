@@ -65,7 +65,7 @@ class UserHandler
         return false;
     }
 
-    public function idExists($id)
+    public static function idExists($id)
     {
         $id = User::select()->where('id', $id)->one();
         return $id ? true : false;
@@ -162,5 +162,32 @@ class UserHandler
         ])->execute();
 
         return $token;
+    }
+
+    public static function isFollowing($from, $to){
+        $data = User_Relation::select()
+        ->where('user_from', $from)
+        ->where('user_to', $to)
+        ->one();
+
+        if($data){
+            return true;
+        }
+        return false;
+
+    }
+
+    public static function follow($from, $to){
+        User_Relation::insert([
+            'user_from' => $from, 
+            'user_to' => $to
+        ])->execute();
+    }
+
+    public static function unfollow($from, $to){
+        User_Relation::delete()
+        ->where('user_from', $from)
+        ->where('user_to', $to)
+        ->execute();
     }
 }

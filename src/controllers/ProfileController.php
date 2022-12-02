@@ -35,13 +35,39 @@ class ProfileController extends Controller {
         $dateTo = new \DateTime('today');
         $user->ageYears = $dateFrom->diff($dateTo)->y;
 
+        
         $feed = PostHandler::getUserFeed($id, $page, $this->loggedUser->id);
+
+        //verificando se EU sigo o usuario
+        $isFollowing='';
+        if($user->id != $this->loggedUser->id){
+            $isFollowing = UserHandler::isFollowing($this->loggedUser->id, $user->id);
+        }
 
 
      $this->render('profile', [
         'loggedUser'=>$this->loggedUser,
         'user' => $user,
-        'feed' => $feed
+        'feed' => $feed,
+        'isFollowing' =>$isFollowing
      ]);
+    }
+
+    public function follow($atts){
+        $to = intval($atts['id']);
+
+        $exists = UserHandler::idExists($to);
+
+        if($exists){
+
+            if(UserHandler::isFollowing($this->loggedUser->id, $to)){
+                UserHandler::unfollow($this->loggedUser->id, $to);
+            }
+            else{
+                UserHandler::follow($this->loggedUser->id, $to);
+            }
+        }
+
+        $this->redirect('/perfil/'.$to);
     }
 }
