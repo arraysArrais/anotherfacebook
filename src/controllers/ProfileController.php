@@ -17,14 +17,16 @@ class ProfileController extends Controller {
     }
 
     public function index($args = []) {
-
         $page = intval(filter_input(INPUT_GET, 'page'));
+
+        //detectando usuário logado
         $id = $this->loggedUser->id;
 
         if(!empty($args['id'])){
             $id = $args['id'];
         }
 
+        //pegando informações do usuário
         $user = UserHandler::getUser($id, true);
 
         if(!$user){
@@ -35,11 +37,11 @@ class ProfileController extends Controller {
         $dateTo = new \DateTime('today');
         $user->ageYears = $dateFrom->diff($dateTo)->y;
 
-        
+        //pegando feed do usuário
         $feed = PostHandler::getUserFeed($id, $page, $this->loggedUser->id);
 
         //verificando se EU sigo o usuario
-        $isFollowing='';
+        $isFollowing=false;
         if($user->id != $this->loggedUser->id){
             $isFollowing = UserHandler::isFollowing($this->loggedUser->id, $user->id);
         }
@@ -69,5 +71,34 @@ class ProfileController extends Controller {
         }
 
         $this->redirect('/perfil/'.$to);
+    }
+
+    public function friends($args = []){
+        $id = $this->loggedUser->id;
+
+        if(!empty($args['id'])){
+            $id = $args['id'];
+        }
+
+        $user = UserHandler::getUser($id, true);
+
+        if(!$user){
+            $this->redirect('/');
+        }
+
+        $dateFrom = new \DateTime($user->birthdate);
+        $dateTo = new \DateTime('today');
+        $user->ageYears = $dateFrom->diff($dateTo)->y;
+
+        $isFollowing=false;
+        if($user->id != $this->loggedUser->id){
+            $isFollowing = UserHandler::isFollowing($this->loggedUser->id, $user->id);
+        }
+
+        $this->render('profile_friends', [
+            'loggedUser'=>$this->loggedUser,
+            'user' => $user,
+            'isFollowing' => $isFollowing
+         ]);
     }
 }
