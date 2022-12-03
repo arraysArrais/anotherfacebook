@@ -291,6 +291,11 @@ header .head-side {
 .profile-info-item {
     text-align: center;
 }
+
+.profile-info a {
+    text-decoration: none;
+}
+
 .profile-info-item-n {
     font-weight: bold;
     font-size:20px;
@@ -390,6 +395,7 @@ header .head-side {
 }
 .full-user-photos .user-photo-item {
     margin:0;
+    max-width: 100%;
 }
 
 .feed-pagination a{
