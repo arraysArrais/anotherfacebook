@@ -72,7 +72,7 @@ class LoginController extends Controller
                 $this->redirect('/cadastro');
             }
 
-                //dd/mm/aaaa to aaaa/mm/dd
+                //dd/mm/aaaa to aaaa-mm-dd
                 $birthdate = $birthdate[2].'-'.$birthdate[1].'-'.$birthdate[0];
 
                 //retorna um timestamp se for um formato de data americano, se não retorna false

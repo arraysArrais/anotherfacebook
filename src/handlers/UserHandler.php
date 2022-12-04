@@ -92,6 +92,7 @@ class UserHandler
             $user = new User;
             $user->id = $data['id'];
             $user->name = $data['name'];
+            $user->email = $data['email'];
             $user->birthdate = $data['birthdate'];
             $user->city = $data['city'];
             $user->work = $data['work'];
@@ -207,5 +208,36 @@ class UserHandler
         }
 
         return $users;
+    }
+
+    public static function updateUser($birthdate, $name, $city, $work, $id){
+        User::update()
+        /*->set('email', $email)*/
+        ->set('birthdate', $birthdate)
+        ->set('name', $name)
+        ->set('city', $city)
+        ->set('work', $work)
+        ->where('id', $id)
+        ->execute();
+
+        /*if(!empty($newpassword)){
+            $hash = password_hash($newpassword, PASSWORD_DEFAULT);
+            User::update()
+            ->set('password', $hash)
+            ->where('id', $id)
+            ->execute();
+        }*/
+
+
+    }
+
+    public static function updatePassword($newpassword, $id){
+        if(!empty($newpassword)){
+            $hash = password_hash($newpassword, PASSWORD_DEFAULT);
+            User::update()
+            ->set('password', $hash)
+            ->where('id', $id)
+            ->execute();
+        }
     }
 }
