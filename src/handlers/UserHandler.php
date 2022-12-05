@@ -240,4 +240,32 @@ class UserHandler
             ->execute();
         }
     }
+
+    public static function updateFiles($fields, $id){
+        User::update()
+        ->set('cover', $fields['cover'])
+        ->where('id', $id)
+        ->execute();
+
+        User::update()
+        ->set('avatar', $fields['avatar'])
+        ->where('id', $id)
+        ->execute();
+    }
+
+    public static function getAvatar($id){
+        $data = User::select()
+                ->where('id', $id)
+                ->one();
+
+        return $data['avatar'];
+    }
+
+    public static function getCover($id){
+        $data = User::select()
+                ->where('id', $id)
+                ->one();
+
+        return $data['cover'];
+    }
 }

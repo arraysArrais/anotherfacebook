@@ -3,7 +3,7 @@
     <?= $render('sidebar', ['activeMenu' => 'config']); ?>
 
     <div class="configform mt-10">
-        <form method="POST" action="<?= $base ?>/config">
+        <form method="POST" enctype="multipart/form-data" action="<?= $base ?>/config">
 
             <?php if (!empty($flash)) : ?>
                 <div class="flash"><?= $flash ?></div>
@@ -11,6 +11,16 @@
             <?php if (!empty($flashsuccess)) : ?>
                 <div class="flashsuccess"><?= $flashsuccess ?></div>
             <?php endif; ?>
+
+            <label for="name">Avatar:<br>
+                <input class="configinput" type="file" name="avatar"></label>
+                <img class="image-edit" src="<?=$base?>/media/avatars/<?=$user->avatar?>">
+            <br><br>
+
+            <label for="name">Capa:<br>
+                <input class="configinput" type="file" name="cover"></label>
+                <img class="image-edit" src="<?=$base?>/media/covers/<?=$user->cover?>">
+            <br><br>
 
             <label for="name">Nome Completo:<br>
                 <input class="configinput" type="text" name="name"></label>

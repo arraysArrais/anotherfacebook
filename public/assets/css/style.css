@@ -461,6 +461,22 @@ header .head-side {
     margin-top:20px;
 }
 
+a{
+    text-decoration: none;
+}
+a:visited{
+    color:inherit;
+}
+a:hover{
+    text-decoration:underline;
+    color:#477dbb;
+}
+
+.configform .image-edit{
+    max-width: 150px;
+    border-radius: 5px;
+}
+
 
 @media (max-width: 992px) {
     header .head-side-right {

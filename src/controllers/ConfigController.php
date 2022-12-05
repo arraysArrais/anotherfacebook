@@ -78,6 +78,38 @@ class ConfigController extends Controller
                 $this->redirect('/config');
             }
 
+            $updateFields = [];
+
+            //avatar
+            if(isset($_FILES['avatar'])&& !empty($_FILES['avatar']['tmp_name'])){
+                $newAvatar = $_FILES['avatar'];
+
+                if(in_array($newAvatar['type'], ['image/jpeg', 'image/jpg', 'image/png'])){
+                    $avatarName = $this->cutImage($newAvatar, 200, 200, 'media/avatars');
+                    $updateFields['avatar'] = $avatarName;
+                }
+            }
+            else{
+                $updateFields['avatar']=UserHandler::getAvatar($this->loggedUser->id);
+            }
+
+
+            //cover
+            if(isset($_FILES['cover']) && !empty($_FILES['cover']['tmp_name'])){
+                $newCover = $_FILES['cover'];
+
+                if(in_array($newCover['type'], ['image/jpeg', 'image/jpg', 'image/png'])){
+                    $coverName = $this->cutImage($newCover, 850, 310, 'media/covers');
+                    $updateFields['cover'] = $coverName;
+
+                }
+            }
+            else{
+                $updateFields['cover']=UserHandler::getCover($this->loggedUser->id);
+            }
+            
+
+            UserHandler::updateFiles($updateFields, $this->loggedUser->id);
             UserHandler::updateUser($birthdate, $name, $city, $work, $this->loggedUser->id);
         } else {
             $_SESSION['flash'] = 'Preencha os dados corretamente';
@@ -85,6 +117,48 @@ class ConfigController extends Controller
         }
         $_SESSION['flashsuccess'] = 'Dados atualizados com sucesso!';
         $this->redirect('/config');
+    }
+
+    private function cutImage($file, $w, $h, $folder){
+        list($widthOrig, $heightOrig) = getimagesize($file['tmp_name']);
+        $ratio = $widthOrig/$heightOrig;
+
+        $newWidth = $w;
+        $newHeight = $newWidth/$ratio;
+
+        if($newHeight<$h){
+            $newHeight = $h;
+            $newWidth = $newHeight*$ratio;
+        }
+
+        $x = $w - $newWidth;
+        $y = $h - $newHeight;
+        $x = $x < 0 ? $x / 2 : $x;
+        $y = $y < 0 ? $y / 2 : $y;
+
+        $finalImage = imagecreatetruecolor($w, $h);
+        switch($file['type']){
+            case 'image/jpeg':
+            case 'image/jpg':
+                $image = imagecreatefromjpeg($file['tmp_name']);
+            break;
+            case 'image/png':
+                $image = imagecreatefromjpeg($file['tmp_name']);
+            break;
+        }
+
+        imagecopyresampled(
+            $finalImage, $image,
+            $x, $y, 0, 0,
+            $newWidth, $newHeight, $widthOrig, $heightOrig
+        );
+
+        $fileName = md5(time().rand(0,9999)).'.jpg';
+
+        imagejpeg($finalImage, $folder.'/'.$fileName);
+
+        return $fileName;
+
     }
 
 
