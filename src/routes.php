@@ -24,13 +24,18 @@ $router->get('/fotos', 'ProfileController@photos');
 
 $router->get('/pesquisa', 'SearchController@index');
 
-$router->get('/sair', 'LoginController@Logout');
-
 $router->get('/config', 'ConfigController@index');
 $router->post('/config', 'ConfigController@configAction');
-
 $router->get('/config/alterarsenha', 'ConfigController@changePassword');
 $router->post('/config/alterarsenha', 'ConfigController@changePasswordAction');
+
+$router->get('/sair', 'LoginController@Logout');
+
+$router->get('/ajax/like/{id}', 'AjaxController@like');
+
+
+
+
 
 
 //$router->get('/pesquisa', '');

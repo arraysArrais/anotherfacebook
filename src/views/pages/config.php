@@ -13,12 +13,12 @@
             <?php endif; ?>
 
             <label for="name">Avatar:<br>
-                <input class="configinput" type="file" name="avatar"></label>
+                <input class="configinput" type="file" name="avatar" accept=".jpg,.jpeg,.png"></label>
                 <img class="image-edit" src="<?=$base?>/media/avatars/<?=$user->avatar?>">
             <br><br>
 
             <label for="name">Capa:<br>
-                <input class="configinput" type="file" name="cover"></label>
+                <input class="configinput" type="file" name="cover" accept=".jpg,.jpeg,.png"></label>
                 <img class="image-edit" src="<?=$base?>/media/covers/<?=$user->cover?>">
             <br><br>
 

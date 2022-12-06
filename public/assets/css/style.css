@@ -464,13 +464,13 @@ header .head-side {
 a{
     text-decoration: none;
 }
-a:visited{
+/*a:visited{
     color:inherit;
 }
 a:hover{
     text-decoration:underline;
     color:#477dbb;
-}
+}*/
 
 .configform .image-edit{
     max-width: 150px;
