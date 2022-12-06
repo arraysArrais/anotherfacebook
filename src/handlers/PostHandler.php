@@ -4,6 +4,7 @@ namespace src\handlers;
 
 use \src\models\Post;
 use \src\models\Posts_like;
+use \src\models\Post_comment;
 use \src\models\User;
 use \src\models\User_Relation;
 
@@ -50,7 +51,12 @@ class PostHandler
             $newPost->liked = self::isLiked($postItem['id'], $loggedUserId);
 
             // TODO:4.2 preencher informações de COMMENTS
-            $newPost->comments = [];
+            $newPost->comments = Post_Comment::select()->where('id_post', $postItem['id'])
+            ->get();
+
+            foreach($newPost->comments as $key => $comment){
+                $newPost->comments[$key]['user'] = User::select()->where('id', $comment['id_user'])->one();
+            }
 
             $posts[] = $newPost;
         }
@@ -87,6 +93,17 @@ class PostHandler
             ])
         ->execute();
     }
+
+    public static function addComment($id, $txt, $loggedUserId){
+            Post_comment::insert([
+            'id_post' => $id,
+            'body' => $txt,
+            'id_user' => $loggedUserId,
+            'created_at' => date('Y-m-d H:i:s')
+            ])->execute();  
+    }
+
+
 
     public static function getUserFeed($idUser, $page, $loggedUserId)
     {

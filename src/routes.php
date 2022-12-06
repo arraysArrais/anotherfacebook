@@ -32,6 +32,7 @@ $router->post('/config/alterarsenha', 'ConfigController@changePasswordAction');
 $router->get('/sair', 'LoginController@Logout');
 
 $router->get('/ajax/like/{id}', 'AjaxController@like');
+$router->post('/ajax/comment', 'AjaxController@comment');
 
 
 
