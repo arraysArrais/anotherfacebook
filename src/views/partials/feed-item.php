@@ -24,8 +24,17 @@
             </div>
         </div>
         <div class="feed-item-body mt-10 m-width-20">
-            <!--post content-->
-            <?= nl2br($data->body) ?>
+            <!--post content -->
+            <?php
+            switch ($data->type) {
+                case 'text':
+                    echo nl2br($data->body);
+                    break;
+                case 'photo':
+                    echo '<img src="' . $base . '/media/uploads/' . $data->body . '">';
+                    break;
+            }
+            ?>
         </div>
         <div class="feed-item-buttons row mt-20 m-width-20">
             <div class="like-btn <?= ($data->liked ? 'on' : '') ?>"><?= $data->likeCount ?></div>
@@ -37,7 +46,7 @@
                 <?php foreach ($data->comments as $item) : ?>
                     <div class="fic-item row m-height-10 m-width-20">
                         <div class="fic-item-photo">
-                            <a href="<?= $base ?>/perfil/<?= $item['user']['id'] ?>"> <img src="<?= $base ?>/media/avatars/<?=$item['user']['avatar'] ?>" /></a>
+                            <a href="<?= $base ?>/perfil/<?= $item['user']['id'] ?>"> <img src="<?= $base ?>/media/avatars/<?= $item['user']['avatar'] ?>" /></a>
                         </div>
                         <div class="fic-item-info">
                             <a href="<?= $base ?>/perfil/<?= $item['user']['id'] ?>"><?= $item['user']['name'] ?></a>
